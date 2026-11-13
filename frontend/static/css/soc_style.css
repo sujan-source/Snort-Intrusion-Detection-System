@@ -1,0 +1,303 @@
+/* Modern Dark Cyber SOC Theme - Zero White Elements & High Contrast Badges */
+:root {
+    --bg-dark: #070b14;
+    --bg-card: #0b1120;
+    --bg-card-hover: #131c31;
+    --border-color: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --accent-cyan: #00f2fe;
+    --accent-blue: #38bdf8;
+    --accent-purple: #a855f7;
+    --sev-critical: #ef4444;
+    --sev-high: #f59e0b;
+    --sev-medium: #3b82f6;
+    --sev-low: #10b981;
+}
+
+body {
+    background-color: var(--bg-dark) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Sidebar & Navigation */
+.navbar-cyber {
+    background-color: #060911 !important;
+    border-bottom: 1px solid #1e293b !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.brand-glow {
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #00f2fe 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-link-cyber {
+    color: #94a3b8 !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-link-cyber:hover, .nav-link-cyber.active {
+    color: #00f2fe !important;
+    background-color: rgba(0, 242, 254, 0.1) !important;
+}
+
+/* Cards & Containers */
+.soc-card {
+    background-color: #0b1120 !important;
+    border: 1px solid #1e293b !important;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.soc-card:hover {
+    border-color: rgba(0, 242, 254, 0.3) !important;
+}
+
+/* COMPLETE BOOTSTRAP 5 TABLE OVERRIDE - NO WHITE BOXES */
+.table, .table-responsive, .soc-table {
+    --bs-table-bg: transparent !important;
+    --bs-table-color: #f1f5f9 !important;
+    --bs-table-border-color: #1e293b !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-hover-bg: rgba(30, 41, 59, 0.7) !important;
+    --bs-table-hover-color: #ffffff !important;
+    color: #f1f5f9 !important;
+    background-color: transparent !important;
+    border-color: #1e293b !important;
+}
+
+/* Remove Bootstrap 5 inset box-shadow from all table cells */
+.table > :not(caption) > * > *, .soc-table > :not(caption) > * > *, table th, table td, table tr {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.soc-table th {
+    background-color: #060911 !important;
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.8px !important;
+    border-bottom: 2px solid #1e293b !important;
+    padding: 12px 14px !important;
+}
+
+.soc-table td {
+    background-color: transparent !important;
+    color: #cbd5e1 !important;
+    border-bottom: 1px solid #1e293b !important;
+    vertical-align: middle !important;
+    font-size: 0.875rem !important;
+    padding: 12px 14px !important;
+}
+
+.soc-table tbody tr {
+    background-color: transparent !important;
+    transition: background-color 0.2s ease;
+}
+
+.soc-table tbody tr:hover {
+    background-color: rgba(30, 41, 59, 0.7) !important;
+}
+
+/* Forms, Inputs & Select Controls - Dark Theme */
+.form-control, .form-select, .input-group-text {
+    background-color: #060a14 !important;
+    border-color: #1e293b !important;
+    color: #38bdf8 !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #080e1c !important;
+    border-color: #00f2fe !important;
+    color: #00f2fe !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 242, 254, 0.2) !important;
+}
+
+.form-control::placeholder {
+    color: #64748b !important;
+}
+
+/* Buttons - Cyber Theme */
+.btn-info {
+    background-color: #0284c7 !important;
+    border-color: #0284c7 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.btn-info:hover {
+    background-color: #00f2fe !important;
+    border-color: #00f2fe !important;
+    color: #070b14 !important;
+}
+
+.btn-outline-info {
+    color: #38bdf8 !important;
+    border-color: #0284c7 !important;
+    background-color: rgba(2, 132, 199, 0.15) !important;
+}
+
+.btn-outline-info:hover {
+    color: #070b14 !important;
+    background-color: #00f2fe !important;
+    border-color: #00f2fe !important;
+}
+
+.btn-outline-secondary {
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+    background-color: #0f172a !important;
+}
+
+.btn-outline-secondary:hover {
+    color: #f8fafc !important;
+    background-color: #1e293b !important;
+}
+
+/* Pagination Dark Styling */
+.page-link {
+    background-color: #060a14 !important;
+    border-color: #1e293b !important;
+    color: #38bdf8 !important;
+}
+
+.page-link:hover {
+    background-color: #1e293b !important;
+    color: #00f2fe !important;
+}
+
+.page-item.active .page-link {
+    background-color: #0284c7 !important;
+    border-color: #0284c7 !important;
+    color: #ffffff !important;
+}
+
+.page-item.disabled .page-link {
+    background-color: #070b14 !important;
+    border-color: #1e293b !important;
+    color: #475569 !important;
+}
+
+/* Modals Dark Styling */
+.modal-content {
+    background-color: #0b1120 !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+}
+
+.modal-header, .modal-footer {
+    border-color: #1e293b !important;
+}
+
+/* Severity Badges - Bold Dark Accents */
+.badge-critical {
+    background-color: rgba(153, 27, 27, 0.4) !important;
+    color: #fca5a5 !important;
+    border: 1px solid #ef4444 !important;
+    font-weight: 600;
+}
+
+.badge-high {
+    background-color: rgba(180, 83, 9, 0.4) !important;
+    color: #fde047 !important;
+    border: 1px solid #f59e0b !important;
+    font-weight: 600;
+}
+
+.badge-medium {
+    background-color: rgba(30, 58, 138, 0.4) !important;
+    color: #93c5fd !important;
+    border: 1px solid #3b82f6 !important;
+    font-weight: 600;
+}
+
+.badge-low {
+    background-color: rgba(6, 78, 59, 0.4) !important;
+    color: #6ee7b7 !important;
+    border: 1px solid #10b981 !important;
+    font-weight: 600;
+}
+
+/* Status Badges */
+.status-new {
+    background-color: rgba(153, 27, 27, 0.3) !important;
+    color: #fca5a5 !important;
+    border: 1px solid rgba(239, 68, 68, 0.5) !important;
+    font-weight: 600;
+}
+
+.status-investigating {
+    background-color: rgba(180, 83, 9, 0.3) !important;
+    color: #fde047 !important;
+    border: 1px solid rgba(245, 158, 11, 0.5) !important;
+    font-weight: 600;
+}
+
+.status-resolved {
+    background-color: rgba(6, 78, 59, 0.3) !important;
+    color: #6ee7b7 !important;
+    border: 1px solid rgba(16, 185, 129, 0.5) !important;
+    font-weight: 600;
+}
+
+.status-false_positive {
+    background-color: rgba(51, 65, 85, 0.4) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid rgba(148, 163, 184, 0.5) !important;
+    font-weight: 600;
+}
+
+/* --- HIGH CONTRAST BADGES FOR YELLOW & RED BOXES --- */
+.badge-yellow-box,
+.badge.bg-warning,
+.badge.bg-warning.bg-opacity-20 {
+    background-color: #f59e0b !important; /* Solid Bright Yellow/Amber */
+    color: #000000 !important;            /* Bold Black Text - 100% Crisp Visibility */
+    border: 1px solid #fbbf24 !important;
+    font-weight: 800 !important;
+    font-size: 0.825rem !important;
+    padding: 5px 12px !important;
+    border-radius: 6px !important;
+}
+
+.badge-red-box,
+.badge.bg-danger,
+.badge.bg-danger.bg-opacity-20 {
+    background-color: #dc2626 !important; /* Solid Bright Red */
+    color: #ffffff !important;            /* Bold White Text - 100% Crisp Visibility */
+    border: 1px solid #f87171 !important;
+    font-weight: 800 !important;
+    font-size: 0.825rem !important;
+    padding: 5px 12px !important;
+    border-radius: 6px !important;
+}
+
+/* Utility Colors */
+.text-cyan {
+    color: #00f2fe !important;
+}
+
+.code-box {
+    background-color: #04070d !important;
+    border: 1px solid #1e293b !important;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #38bdf8 !important;
+    overflow-x: auto;
+}

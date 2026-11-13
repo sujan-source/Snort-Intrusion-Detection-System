@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snort NIDS - Security Operations Center Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/soc_style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-cyber navbar-dark sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fa-solid fa-shield-halved fa-lg me-2 text-info"></i>
+                <span class="brand-glow">SNORT NIDS SOC</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#socNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="socNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link nav-link-cyber active" href="/"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/alerts-page"><i class="fa-solid fa-triangle-exclamation me-1"></i> Alerts Feed</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/rules-page"><i class="fa-solid fa-list-check me-1"></i> Snort Rules</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/simulator-page"><i class="fa-solid fa-flask-vial me-1"></i> Attack Simulator</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/reports-page"><i class="fa-solid fa-file-shield me-1"></i> Security Reports</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-dark border border-secondary px-3 py-2">
+                        <span class="pulse-dot me-2"></span> Engine: <strong class="text-success">Snort 2.9 / Live</strong>
+                    </span>
+                    <span id="userBadge" class="text-secondary small">
+                        <i class="fa-solid fa-user-shield me-1"></i> <span id="lblUsername">Analyst</span>
+                    </span>
+                    <a href="/login" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-right-from-bracket"></i> Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container-fluid px-4 py-4">
+
+        <!-- Top Metrics Counters -->
+        <div class="row g-3 mb-4">
+            <!-- Total Packets -->
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="soc-card p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-secondary small text-uppercase fw-semibold">Packets Inspected</div>
+                        <div class="fs-3 fw-bold text-light mt-1" id="valTotalPackets">0</div>
+                        <div class="text-muted small"><i class="fa-solid fa-network-wired text-info me-1"></i> Real-time Network Monitoring</div>
+                    </div>
+                    <div class="stat-icon-wrapper bg-primary bg-opacity-20 text-info">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Intrusions -->
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="soc-card p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-secondary small text-uppercase fw-semibold">Intrusions Detected</div>
+                        <div class="fs-3 fw-bold text-light mt-1" id="valTotalIntrusions">0</div>
+                        <div class="text-muted small"><i class="fa-solid fa-bug text-danger me-1"></i> Signature Rule Matches</div>
+                    </div>
+                    <div class="stat-icon-wrapper bg-danger bg-opacity-20 text-danger">
+                        <i class="fa-solid fa-shield-virus"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critical Severity -->
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="soc-card p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-secondary small text-uppercase fw-semibold">Critical Threats</div>
+                        <div class="fs-3 fw-bold text-danger mt-1" id="valCritical">0</div>
+                        <div class="text-muted small"><i class="fa-solid fa-skull text-danger me-1"></i> Priority 1 Incidents</div>
+                    </div>
+                    <div class="stat-icon-wrapper bg-danger bg-opacity-20 text-danger">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- High/Medium Severity -->
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="soc-card p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-secondary small text-uppercase fw-semibold">High / Med Threats</div>
+                        <div class="fs-3 fw-bold text-warning mt-1" id="valHighMed">0</div>
+                        <div class="text-muted small"><i class="fa-solid fa-eye text-warning me-1"></i> Priority 2 & 3 Incidents</div>
+                    </div>
+                    <div class="stat-icon-wrapper bg-warning bg-opacity-20 text-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-3 mb-4">
+            <!-- Intrusions Trend Line Chart -->
+            <div class="col-12 col-lg-8">
+                <div class="soc-card p-3 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-uppercase fw-bold text-info mb-0"><i class="fa-solid fa-chart-area me-2"></i> Intrusion Velocity Over Time</h6>
+                        <span class="badge bg-dark border border-secondary text-secondary">Past 7 Days</span>
+                    </div>
+                    <div style="height: 260px;">
+                        <canvas id="chartTrend"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protocol Distribution Doughnut Chart -->
+            <div class="col-12 col-lg-4">
+                <div class="soc-card p-3 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-uppercase fw-bold text-info mb-0"><i class="fa-solid fa-chart-pie me-2"></i> Protocol Distribution</h6>
+                    </div>
+                    <div style="height: 260px;" class="d-flex align-items-center justify-content-center">
+                        <canvas id="chartProtocol"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Alerts Stream & Top Attackers Row -->
+        <div class="row g-3 mb-4">
+            <!-- Live Alerts Stream Table -->
+            <div class="col-12 col-lg-8">
+                <div class="soc-card p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-uppercase fw-bold text-light mb-0">
+                            <i class="fa-solid fa-bolt text-warning me-2"></i> Real-Time Alert Stream
+                        </h6>
+                        <a href="/alerts-page" class="btn btn-sm btn-outline-info">View All Alerts <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table soc-table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Severity</th>
+                                    <th>Protocol</th>
+                                    <th>Source IP : Port</th>
+                                    <th>Destination IP : Port</th>
+                                    <th>Attack Signature / Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyLiveAlerts">
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4"><i class="fa-solid fa-spinner fa-spin me-2"></i> Loading Snort Alerts Stream...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Attack Sources & Categories Panel -->
+            <div class="col-12 col-lg-4">
+                <div class="soc-card p-3 mb-3">
+                    <h6 class="text-uppercase fw-bold text-danger mb-3">
+                        <i class="fa-solid fa-crosshairs me-2"></i> Top Attacker Source IPs
+                    </h6>
+                    <div id="listTopSources" class="list-group list-group-flush bg-transparent">
+                        <div class="text-muted small">Loading attacker IPs...</div>
+                    </div>
+                </div>
+
+                <div class="soc-card p-3">
+                    <h6 class="text-uppercase fw-bold text-warning mb-3">
+                        <i class="fa-solid fa-fire me-2"></i> Attack Categories
+                    </h6>
+                    <div style="height: 180px;">
+                        <canvas id="chartAttackTypes"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Alert Detail Modal -->
+    <div class="modal fade" id="modalAlertDetail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-info" id="modalTitle"><i class="fa-solid fa-shield-virus me-2"></i> Alert Detail Investigation</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <p class="text-muted">Loading alert details...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted py-3 border-top border-secondary mt-5 small">
+        Intrusion Detection System Using Snort &bull; Ethical Hacking & Cybersecurity Project 2026
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/charts.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snort NIDS - Alert Investigation & Filters</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/soc_style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-cyber navbar-dark sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fa-solid fa-shield-halved fa-lg me-2 text-info"></i>
+                <span class="brand-glow">SNORT NIDS SOC</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#socNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="socNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber active" href="/alerts-page"><i class="fa-solid fa-triangle-exclamation me-1"></i> Alerts Feed</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/rules-page"><i class="fa-solid fa-list-check me-1"></i> Snort Rules</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/simulator-page"><i class="fa-solid fa-flask-vial me-1"></i> Attack Simulator</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-cyber" href="/reports-page"><i class="fa-solid fa-file-shield me-1"></i> Security Reports</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid px-4 py-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold text-light mb-1"><i class="fa-solid fa-triangle-exclamation text-warning me-2"></i> Security Alerts Feed & Incident Analysis</h4>
+                <p class="text-secondary small mb-0">Search, filter, investigate packet headers, and triage Snort network intrusion alerts.</p>
+            </div>
+        </div>
+
+        <!-- Filter Controls Bar -->
+        <div class="soc-card p-3 mb-4">
+            <form id="filterForm" class="row g-3 align-items-end">
+                <div class="col-12 col-md-3">
+                    <label class="form-label text-secondary small fw-semibold">Search Query</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-dark border-secondary text-secondary"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" id="inputSearch" class="form-control bg-dark border-secondary text-light" placeholder="IP, attack type, or message...">
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <label class="form-label text-secondary small fw-semibold">Severity</label>
+                    <select id="selectSeverity" class="form-select form-select-sm bg-dark border-secondary text-light">
+                        <option value="">All Severities</option>
+                        <option value="Critical">Critical</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <label class="form-label text-secondary small fw-semibold">Protocol</label>
+                    <select id="selectProtocol" class="form-select form-select-sm bg-dark border-secondary text-light">
+                        <option value="">All Protocols</option>
+                        <option value="TCP">TCP</option>
+                        <option value="UDP">UDP</option>
+                        <option value="ICMP">ICMP</option>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <label class="form-label text-secondary small fw-semibold">Status</label>
+                    <select id="selectStatus" class="form-select form-select-sm bg-dark border-secondary text-light">
+                        <option value="">All Statuses</option>
+                        <option value="New">New</option>
+                        <option value="Investigating">Investigating</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="False Positive">False Positive</option>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-sm btn-info w-100"><i class="fa-solid fa-filter me-1"></i> Apply Filters</button>
+                    <button type="button" id="btnResetFilters" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-rotate-left"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Alerts Table Container -->
+        <div class="soc-card p-3">
+            <div class="table-responsive">
+                <table class="table soc-table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Alert ID</th>
+                            <th>Timestamp</th>
+                            <th>Severity</th>
+                            <th>Protocol</th>
+                            <th>Source IP : Port</th>
+                            <th>Destination IP : Port</th>
+                            <th>Attack Signature / Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyAlertsList">
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-4"><i class="fa-solid fa-spinner fa-spin me-2"></i> Loading alerts...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Bar -->
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
+                <div class="text-secondary small" id="lblPaginationSummary">Showing 0 of 0 alerts</div>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0" id="paginationControls">
+                        <!-- Dynamic pagination buttons -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Alert Detail & Status Modal -->
+    <div class="modal fade" id="modalAlertDetail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-info" id="modalTitle"><i class="fa-solid fa-shield-virus me-2"></i> Alert Detail & Triage</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <p class="text-muted">Loading details...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted py-3 border-top border-secondary mt-5 small">
+        Intrusion Detection System Using Snort &bull; Ethical Hacking & Cybersecurity Project 2026
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/alerts.js"></script>
+</body>
+</html>

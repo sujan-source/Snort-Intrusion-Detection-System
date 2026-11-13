@@ -1,0 +1,1 @@
+08/21-10:30:24.376433 [**] [1:1000002:1] NIDS DETECTED: Nmap TCP SYN Port Scan Attempt [**] [Classification: attempted-recon] [Priority: 2] {TCP} 10.0.0.99:6988 -> 192.168.1.200:80
