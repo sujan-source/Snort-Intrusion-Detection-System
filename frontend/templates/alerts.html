@@ -28,6 +28,15 @@
                     <li class="nav-item"><a class="nav-link nav-link-cyber" href="/simulator-page"><i class="fa-solid fa-flask-vial me-1"></i> Attack Simulator</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-cyber" href="/reports-page"><i class="fa-solid fa-file-shield me-1"></i> Security Reports</a></li>
                 </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-dark border border-secondary px-3 py-2">
+                        <span class="pulse-dot me-2"></span> Engine: <strong class="text-success">Snort 2.9 / Live</strong>
+                    </span>
+                    <span id="userBadge" class="text-secondary small">
+                        <i class="fa-solid fa-user-shield me-1"></i> <span id="lblUsername">Analyst</span>
+                    </span>
+                    <a href="/login" id="authBtn" class="btn btn-danger btn-sm text-white fw-semibold" onclick="handleLogout(event)"><i class="fa-solid fa-right-from-bracket me-1"></i> Logout</a>
+                </div>
             </div>
         </div>
     </nav>

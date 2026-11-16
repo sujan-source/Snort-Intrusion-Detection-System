@@ -1,6 +1,7 @@
 // Lab Attack Simulator JS
 
 document.addEventListener('DOMContentLoaded', () => {
+    checkUserAuth();
     const buttons = document.querySelectorAll('.btn-trigger-attack');
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -46,4 +47,20 @@ function logToConsole(message) {
     const line = `[${timeStr}] ${message}\n`;
     consoleBox.innerText += line;
     consoleBox.scrollTop = consoleBox.scrollHeight;
+}
+
+function checkUserAuth() {
+    const username = localStorage.getItem('nids_username');
+    if (username) {
+        const lbl = document.getElementById('lblUsername');
+        if (lbl) lbl.textContent = username;
+    }
+}
+
+function handleLogout(event) {
+    if (event) event.preventDefault();
+    localStorage.removeItem('nids_token');
+    localStorage.removeItem('nids_username');
+    localStorage.removeItem('nids_role');
+    window.location.href = '/login';
 }

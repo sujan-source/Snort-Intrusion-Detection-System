@@ -18,8 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkUserAuth() {
     const username = localStorage.getItem('nids_username');
     if (username) {
-        document.getElementById('lblUsername').textContent = username;
+        const lbl = document.getElementById('lblUsername');
+        if (lbl) lbl.textContent = username;
     }
+}
+
+function handleLogout(event) {
+    if (event) event.preventDefault();
+    localStorage.removeItem('nids_token');
+    localStorage.removeItem('nids_username');
+    localStorage.removeItem('nids_role');
+    window.location.href = '/login';
 }
 
 async function loadSummaryMetrics() {

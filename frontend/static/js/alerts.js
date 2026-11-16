@@ -3,6 +3,7 @@
 let currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
+    checkUserAuth();
     fetchAlertsPage(1);
 
     document.getElementById('filterForm').addEventListener('submit', (e) => {
@@ -214,4 +215,20 @@ async function openTriageModal(alertId) {
     } catch (e) {
         console.error('Failed to load alert detail:', e);
     }
+}
+
+function checkUserAuth() {
+    const username = localStorage.getItem('nids_username');
+    if (username) {
+        const lbl = document.getElementById('lblUsername');
+        if (lbl) lbl.textContent = username;
+    }
+}
+
+function handleLogout(event) {
+    if (event) event.preventDefault();
+    localStorage.removeItem('nids_token');
+    localStorage.removeItem('nids_username');
+    localStorage.removeItem('nids_role');
+    window.location.href = '/login';
 }
